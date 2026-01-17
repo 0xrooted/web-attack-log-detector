@@ -1,6 +1,6 @@
-from detectors.sqli_detector import detect_sqli
-from detectors.xss_detector import detect_xss
-from detectors.path_traversal_detector import detect_path_traversal
+from modules.sqli_detector import detect_sqli
+from modules.xss_detector import detect_xss
+from modules.path_traversal_detector import detect_path_traversal
 from core.report_generator import generate_report
 
 LOG_FILE = "../logs/sample_access.log"
