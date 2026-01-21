@@ -1,10 +1,14 @@
 from modules.sqli_detector import detect_sqli
 from modules.xss_detector import detect_xss
 from modules.path_traversal_detector import detect_path_traversal
-from core.report_generator import generate_report
+from utils.report_generator import generate_report
+from utils.timeline_generator import timeline_generate
+import os
 
-LOG_FILE = "../logs/sample_access.log"
-REPORT_FILE = "../reports/attack_report.txt"
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+LOG_FILE = os.path.join(BASE_DIR, "logs", "sample_access.log")
+REPORT_FILE = os.path.join(BASE_DIR, "reports", "attack_report.txt")
 
 def main():
     results = {}
@@ -18,7 +22,10 @@ def main():
     results["Path Traversal"] = {"count": path_count, "ips": path_ips}
 
     generate_report(results, REPORT_FILE)
-    print("[+] Report generated successfully")
+
+    timeline_generate()
+
+    print("[+] Reports and evidances generated successfully")
 
 if __name__ == "__main__":
     main()

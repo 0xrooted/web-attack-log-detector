@@ -9,7 +9,7 @@ SOC and DFIR teams investigate suspicious web activity using server logs.
 
 ---
 
-## What this tool does
+## 🔍 What this tool does
 
 The tool scans access logs and detects the following attack types:
 
@@ -22,57 +22,73 @@ For each attack type, it:
 - Identifies attacker IP addresses
 - Generates a human-readable incident report
 
+Each detector works independently and produces forensic evidence that can
+later be correlated during an investigation.
+
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 web-attack-log-detector/
 │
-├── detectors/
+├── core/
+│ └── main.py
+│
+├── modules/
 │ ├── sqli_detector.py
 │ ├── xss_detector.py
 │ └── path_traversal_detector.py
 │
-├── core/
-│ └── report_generator.py
+├── utils/
+│ ├── evidance_csv.py
+│ ├── report_generator.py
+│ └── timeline_generator.py
 │
 ├── logs/
 │ └── sample_access.log
 │
+├── evidence_data/
+│ ├── sqli_summary.csv
+│ ├── xss_summary.csv
+│ └── path_traversal_summary.csv
+│
 ├── reports/
 │ └── attack_report.txt
 │
-├── main.py
 └── README.md
 ```
 
 ---
 
-## How detection works (high level)
+## 🧠 Detection & Evidence Logic
 
-- Access logs are read line by line
-- Each detector searches for known attack indicators
-- Attacker IPs are extracted from log entries
-- Results are returned to a central controller (`main.py`)
-- A DFIR-style incident report is generated
+Each detector:
+- Scans raw access logs
+- Identifies malicious patterns
+- Extracts:
+  - Timestamp
+  - Attacker IP
+  - Attack type
+  - Full log entry
+- Writes structured CSV evidence
 
-This approach is similar to how real-world log-based detection pipelines work.
-
----
-
-## Output
-
-The tool generates a plain text incident report that includes:
-- SQL Injection activity
-- XSS activity
-- Path Traversal activity
-
-The report is saved inside the `reports/` directory.
+This mirrors how real DFIR investigations preserve raw evidence before
+correlation.
 
 ---
 
-## Note
+## ⏱️ Timeline Correlation
+
+The timeline module processes all generated evidence files and builds a
+chronological view of attack activity.
+
+This helps answer:
+- When did the attack start?
+- Which attack came first?
+- Were multiple attack types launched by the same IP?
+
+## 📝 Note
 
 The `sample_access.log`file included in this repository is **synthetically generated** for learning and demonstration purposes only.
 
@@ -87,3 +103,14 @@ From the project root directory:
 
 ```bash
 python -m core.main
+```
+---
+
+## 📊 Output
+
+The tool generates a plain text incident report that includes:
+- SQL Injection activity
+- XSS activity
+- Path Traversal activity
+
+The report is saved inside the `reports/` directory and evidance CSV's isnide `evidace_data/`
