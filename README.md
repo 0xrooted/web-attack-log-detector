@@ -1,29 +1,57 @@
-# Web Attack Log Detector (Mini SIEM-style)
+# Web Attack Log Detector  
+Log-Based Attack Detection & Incident Simulation (SOC Project)
 
-This project is a simple web attack detection tool built as a DFIR-focused learning project.
-It analyzes web server access logs (Apache/Nginx style) and detects common web attacks based
-on request patterns.
+## 📌 Overview
 
-The goal of this project is not exploitation, but detection and analysis — similar to how
-SOC and DFIR teams investigate suspicious web activity using server logs.
+This project simulates how a SOC analyst investigates suspicious web activity using server access logs.
+
+It analyzes Apache/Nginx-style logs to detect common web attack patterns such as:
+
+- SQL Injection (SQLi)
+- Cross-Site Scripting (XSS)
+- Path Traversal
+
+The focus is detection, evidence extraction, and structured incident reporting — not exploitation.
 
 ---
 
-## 🔍 What this tool does
+## 🧪 Simulated Attack Scenario
 
-The tool scans access logs and detects the following attack types:
+A web server begins receiving abnormal HTTP requests containing encoded payloads, traversal attempts, and injection patterns.
 
-- SQL Injection attempts
-- Cross-Site Scripting (XSS) attempts
-- Path Traversal attempts
+The tool processes raw logs to identify suspicious requests, extract forensic indicators, and generate an investigation-ready incident report.
 
-For each attack type, it:
-- Counts total attempts
-- Identifies attacker IP addresses
-- Generates a human-readable incident report
+---
 
-Each detector works independently and produces forensic evidence that can
-later be correlated during an investigation.
+## 🔎 Investigation Workflow
+
+1. Raw access logs ingested  
+2. Detection modules executed independently  
+3. Malicious patterns identified  
+4. Evidence extracted:
+   - timestamp
+   - IP address
+   - attack type
+   - full request string  
+5. CSV evidence generated  
+6. Incident report compiled  
+7. Timeline correlation created  
+
+---
+
+## 📊 Extracted Evidence
+
+### SQL Injection Attempts
+![SQL Injection Evidence](screenshots/sqli_evidence.png)
+
+### Path Traversal Activity
+![Path Traversal Evidence](screenshots/path_traversal_evidence.png)
+
+### Cross-Site Scripting Attempts
+![XSS Evidence](screenshots/xss_evidence.png)
+
+### Timeline Correlation of Attacks
+![Timeline](screenshots/timeline_correlation.png)
 
 ---
 
@@ -35,82 +63,80 @@ web-attack-log-detector/
 ├── core/
 │ └── main.py
 │
-├── modules/
-│ ├── sqli_detector.py
-│ ├── xss_detector.py
-│ └── path_traversal_detector.py
-│
-├── utils/
-│ ├── evidance_csv.py
-│ ├── report_generator.py
-│ └── timeline_generator.py
-│
-├── logs/
-│ └── sample_access.log
-│
 ├── evidence_data/
 │ ├── sqli_summary.csv
 │ ├── xss_summary.csv
 │ └── path_traversal_summary.csv
 │
+├── logs/
+│ └── sample_access.log
+│
+├── modules/
+│ ├── sqli_detector.py
+│ ├── xss_detector.py
+│ └── path_traversal_detector.py
+│
 ├── reports/
 │ └── attack_report.txt
+│
+├── screenshots/
+│   ├── path_traversal_evidence.png
+│   ├── sqli_evidence.png
+│   ├── timeline_correlation.png
+│   ├── xss_evidence.png
+|
+├── utils/
+│ ├── evidance_csv.py
+│ ├── report_generator.py
+│ └── timeline_generator.py
 │
 └── README.md
 ```
 
----
+## 🧠 Detection Logic
 
-## 🧠 Detection & Evidence Logic
+Pattern-based detection modules scan raw requests to identify known malicious behavior.
 
-Each detector:
-- Scans raw access logs
-- Identifies malicious patterns
-- Extracts:
-  - Timestamp
-  - Attacker IP
-  - Attack type
-  - Full log entry
-- Writes structured CSV evidence
-
-This mirrors how real DFIR investigations preserve raw evidence before
-correlation.
+Each detection preserves structured forensic evidence for investigation and correlation.
 
 ---
 
-## ⏱️ Timeline Correlation
+## 🗂️ MITRE ATT&CK Mapping
 
-The timeline module processes all generated evidence files and builds a
-chronological view of attack activity.
-
-This helps answer:
-- When did the attack start?
-- Which attack came first?
-- Were multiple attack types launched by the same IP?
-
-## 📝 Note
-
-The `sample_access.log`file included in this repository is **synthetically generated** for learning and demonstration purposes only.
-
-It does **not** belong to any real system, server, or organization.  
-All IP addresses, usernames, and timestamps are dummy and used only to simulate real-world DFIR scenarios such as brute-force attacks and suspicious login behavior.
+- SQL Injection → T1190 (Exploit Public-Facing Application)  
+- Path Traversal → T1006 (Path Traversal)  
+- XSS → T1059 (Command & Script Injection context)
 
 ---
 
-## How to run
+## 🔎 Analyst Notes
 
-From the project root directory:
+- Multiple attack vectors observed from recurring IP sources  
+- SQLi + Path traversal attempts suggest reconnaissance followed by exploitation attempts  
+- Timeline correlation highlights coordinated activity  
+
+---
+
+## ▶️ How to Run
 
 ```bash
 python -m core.main
 ```
+
 ---
 
-## 📊 Output
+## 📁 Output
 
-The tool generates a plain text incident report that includes:
-- SQL Injection activity
-- XSS activity
-- Path Traversal activity
+- CSV evidence files
+- incident report
+- timeline correlation
 
-The report is saved inside the `reports/` directory and evidance CSV's isnide `evidace_data/`
+Stored in:
+- `evidence_data/`
+- `reports/`
+
+---
+
+## 🎯 Objective
+
+Demonstrate log-based detection, evidence preservation, and SOC-style incident investigation workflow.
