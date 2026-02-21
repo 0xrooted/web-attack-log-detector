@@ -48,7 +48,7 @@ The tool processes raw logs to identify suspicious requests, extract forensic in
 ![Path Traversal Evidence](screenshots/path_traversal_evidence.png)
 
 ### Cross-Site Scripting Attempts
-![XSS Evidence](screenshots/xss_evidence.png)
+![XSS Evidence](screenshots/xss_summary_evidence.png)
 
 ### Timeline Correlation of Attacks
 ![Timeline](screenshots/timeline_correlation.png)
